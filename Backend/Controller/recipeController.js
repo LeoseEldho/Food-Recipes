@@ -66,7 +66,40 @@ export const addRecipes = async (req, res) => {
 };
 
 export const editRecipes = async (req, res) => {
-  res.send("sdfasdfa");
+  try {
+    const { title, ingredients, instructions, time, image } = req.body;
+    const recipe = await Recipe.findById(req.params.id);
+    if (!recipe) {
+      return res.status(400).json({
+        success: false,
+        message: "This Recipe is not Present",
+      });
+    }
+    const updateRecipe = await Recipe.findByIdAndUpdate(recipe, req.body, {
+      new: true,
+    });
+    res
+      .status(201)
+      .json({ success: true, message: "Recipe Updated", data: updateRecipe });
+  } catch (error) {
+    console.log("Something Went Wrong !", error);
+    res.status(500).json({ success: false });
+  }
 };
 
-export const deleteRecips = async (req, res) => {};
+export const deleteRecips = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const recipe = await Recipe.findById( id );
+    if (!recipe) {
+      return res
+        .status(400)
+        .json({ success: false, message: "There is no product " });
+    }
+    const deleteRecips = await Recipe.findByIdAndDelete(recipe);
+    res.status(200).json({success:true,message:"Recipe has been Deleted"})
+  } catch (error) {
+    console.log("Something Went Wrong !", error);
+    res.status(500).json({ success: false });
+  }
+};
