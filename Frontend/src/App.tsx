@@ -5,10 +5,12 @@ import Home from "./Pages/Home";
 import Favourite from "./Pages/Favourite";
 import Login from "./Pages/Login";
 import MyRecipe from "./Pages/MyRecipe";
+import Context from "./Context/Context";
 
 function App() {
   return (
-    <div className="min-h-screen bg-black ">
+    <Context>
+    <div className="min-h-screen bg-black reative">
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -17,7 +19,8 @@ function App() {
         <Route path="/login" element={<Login />} />
       </Routes>
       <Footer />
-    </div>
+      </div>
+      </Context>
   );
 }
 

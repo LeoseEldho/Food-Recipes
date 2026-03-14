@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config"
 import dataBase from "./Database/db.js";
 import router from "./Routes/recipeRoute.js";
+import cors from 'cors'
 
 const app = express();
 
@@ -11,7 +12,8 @@ app.get("/", (req, res) => {
     res.send("Server is running")
 });
 
-app.use("/",router)
+app.use(cors())
+app.use("/api",router) 
 
 dataBase()
 

@@ -2,7 +2,7 @@
 
 const Favourite = () => {
   return (
-    <div className="text-white">
+    <div className="text-white ">
       Favourite
     </div>
   )

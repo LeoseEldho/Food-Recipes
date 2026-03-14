@@ -11,7 +11,7 @@ const navbar = [
   { name: "Login", path: "/login" }
 ];
   return (
-    <section id="header" className="border-b border-gray-400 sticky top-0">
+    <section id="header" className="border-b border-gray-400 sticky top-0 z-50 bg-black">
       <div className="px-6 max-w-7xl m-auto">
         <div className="flex justify-between  h-20 items-center">
           <div className="text-4xl text-white">Recipes</div>
