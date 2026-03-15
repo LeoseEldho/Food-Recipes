@@ -21,12 +21,12 @@ const navbar = [
                       </button>
             {
               open&& <div className="absolute right-0 mt-2 bg-white rounded shadow w-40">
-                {navbar.map((e) => (<Link defaultValue={"/"} to={e.path} className="p-2 block hover:bg-gray-100 cursor-pointer">{ e.name}</Link>))}
+                {navbar.map((e) => (<Link defaultValue={"/"} to={e.path} key={e.path} className="p-2 block hover:bg-gray-100 cursor-pointer">{ e.name}</Link>))}
             </div>
              }
           </div>
           <ul className="hidden sm:flex text-white ">
-            {navbar.map((x) => (<Link to={x.path} className="px-2.5">{ x.name}</Link>))}
+            {navbar.map((x) => (<Link to={x.path} key={x.path} className="px-2.5">{ x.name}</Link>))}
           </ul>
         </div>
       </div>

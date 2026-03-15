@@ -10,17 +10,17 @@ import Context from "./Context/Context";
 function App() {
   return (
     <Context>
-    <div className="min-h-screen bg-black reative">
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/favourite" element={<Favourite />} />
-        <Route path="/myrecipe" element={<MyRecipe />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-      <Footer />
+      <div className="min-h-screen bg-black ">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/favourite" element={<Favourite />} />
+          <Route path="/myrecipe" element={<MyRecipe />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
       </div>
-      </Context>
+      <Footer />
+    </Context>
   );
 }
 
