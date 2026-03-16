@@ -6,12 +6,15 @@ import Favourite from "./Pages/Favourite";
 import Login from "./Pages/Login";
 import MyRecipe from "./Pages/MyRecipe";
 import Context from "./Context/Context";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
     <Context>
       <Header />
+       
       <div className="min-h-screen bg-black ">
+         <ToastContainer/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/favourite" element={<Favourite />} />
