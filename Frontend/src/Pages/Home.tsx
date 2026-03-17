@@ -2,13 +2,14 @@ import { useContext, useEffect, useState } from "react";
 import { FaHeart, FaSearch } from "react-icons/fa";
 import { RecipeContext } from "../Context/Context";
 import { BsStopwatch } from "react-icons/bs";
+import { useNavigate } from "react-router";
 
 const Home = () => {
   const context = useContext(RecipeContext);
   if (!context) return null;
   const { api } = context;
   const [recipe, setRecipe] = useState<any[]>([]);
-  console.log(recipe);
+  const navigate =useNavigate()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,31 +26,38 @@ const Home = () => {
   return (
     <section className="text-white max-w-7xl m-auto px-6 ">
       <div className="flex  justify-center pt-6 mb-6">
-        <div className="w-full max-w-3xl">
+        <div className="w-full ">
           <form
             action=""
-            className="flex items-center border border-gray-400 rounded-2xl outline-0"
+            className="flex items-center border border-gray-400 rounded-2xl outline-0 "
           >
-            <FaSearch className="ml-5" />
+            <FaSearch className="ml-5 w-5"  />
             <input
               type="text"
               placeholder="Seach for Recipe"
-              className="pl-3 py-4 outline-0"
+              className="pl-3 py-4 outline-0 w-full"
             />
-            <button className="bg-purple-600 rounded-3xl px-3 text-sm font-bold py-1.5">
+            <button className="bg-purple-600 rounded-3xl px-3 text-sm font-bold py-1.5 mr-3">
               Search
             </button>
           </form>
         </div>
       </div>
+      <div className="grid grid-cols-2">
+          <img src="src\assets\food\image.png" alt="" />
+           <div className="flex justify-between my-6 border border-gray-400 rounded-4xl px-2.5 py-3">
+        <h2 className="font-extrabold">Add New Recipe</h2>
+        <button onClick={()=>navigate("/addRecipe")} className="bg-green-600 rounded-4xl px-2 font-bold">Add</button>
+      </div>
+   </div>
       <div>
-        <div className="grid grid-cols-1 text-white gap-6">
+        <div className="grid grid-cols-1 text-white gap-6 sm:grid-cols-2 items-center justify-center">
           {recipe.map((x: any) => (
             <div className="flex flex-col rounded-3xl relative border border-gray-400 overflow-hidden ">
               <div className="h-56 relative">
                 <img
                   className="w-full h-full object-cover"
-                  src="src\assets\food\image.png"
+                  src="src\assets\food\image-food.png"
                   alt="Recipe Image"
                 />
                 <div className="absolute top-3 left-2 p-2 rounded-full border-gray-400 border inline-block items-center bg-black">

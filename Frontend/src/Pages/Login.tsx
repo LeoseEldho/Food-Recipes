@@ -7,11 +7,11 @@ const Login = () => {
 
   const context = useContext(RecipeContext)
   if (!context) return null;
-  const {api} = context
+  const {api,isRegister,setisRegister ,setlogin} = context
   
   const navigate=useNavigate()
 
-  const [isRegister, setisRegister] = useState("login");
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,15 +20,17 @@ const Login = () => {
     e.preventDefault();
     try {
       if(isRegister=="isRegister"){
-      const respone = await api.post("/api/register", { name, password, email });
-      if (respone.data.success) {
-        toast.success(respone.data.message);
+      const response = await api.post("/api/register", { name, password, email });
+      if (response.data.success) {
+        toast.success(response.data.message);
         setisRegister("login");
+        localStorage.setItem("token", response.data.token)
       }
     } else {
-        const respone =await api.post("/api/login", { email, password });
-        if (respone.data.success) {
-          toast.success(respone.data.message);
+        const response =await api.post("/api/login", { email, password });
+        if (response.data.success) {
+          toast.success(response.data.message);
+          setlogin(true)
           navigate("/")
         }
       }

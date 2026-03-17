@@ -7,6 +7,7 @@ import Login from "./Pages/Login";
 import MyRecipe from "./Pages/MyRecipe";
 import Context from "./Context/Context";
 import { ToastContainer } from "react-toastify";
+import AddRecipe from "./Pages/AddRecipe";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/favourite" element={<Favourite />} />
           <Route path="/myrecipe" element={<MyRecipe />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/addRecipe" element={<AddRecipe/>}></Route>
         </Routes>
       </div>
       <Footer />
