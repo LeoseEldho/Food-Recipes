@@ -4,41 +4,49 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 
 const Login = () => {
-
-  const context = useContext(RecipeContext)
+  const context = useContext(RecipeContext);
   if (!context) return null;
-  const {api,isRegister,setisRegister ,setlogin} = context
-  
-  const navigate=useNavigate()
+  const { api, isRegister, setisRegister, setlogin } = context;
 
+  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const onsubmit = async (e:React.FormEvent) => {
+  const onsubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if(isRegister=="isRegister"){
-      const response = await api.post("/api/register", { name, password, email });
-      if (response.data.success) {
-        toast.success(response.data.message);
-        setisRegister("login");
-        localStorage.setItem("token", response.data.token)
-      }
-    } else {
-        const response =await api.post("/api/login", { email, password });
+      if (isRegister == "Register") {
+        const response = await api.post("/api/register", {
+          name,
+          password,
+          email,
+        });
         if (response.data.success) {
           toast.success(response.data.message);
-          setlogin(true)
-          navigate("/")
+          setisRegister("login");
+          localStorage.setItem("token", response.data.token);
+        }
+      } else {
+        const response = await api.post("/api/login", { email, password });
+        if (response.data.success) {
+          toast.success(response.data.message);
+          setlogin(true);
+          localStorage.setItem("token", response.data.token);
+          navigate("/");
         }
       }
-    } catch (error) {
-      console.log("something Went error",error)
-      toast.error("Something Went Wrong")
+    } catch (error: any) {
+      console.log(error);
+
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Something Went Wrong");
+      }
     }
-  }
+  };
 
   return (
     <section className="max-w-96 m-auto px-6 py-16 text-white h-full flex justify-center items-center ">
@@ -91,11 +99,26 @@ const Login = () => {
             Don't have an account?
           </h3>
         )}
-        {isRegister=="login"?<button type="submit" className="bg-amber-100 text-center flex justify-center w-full mt-5 text-black font-extrabold p-2 rounded-4xl">
-          Login
-        </button>:<button className="bg-amber-100 text-center flex justify-center w-full mt-5 text-black font-extrabold p-2 rounded-4xl">
-          Submit
-        </button>}
+                {isRegister == "Register" && (
+          <h3
+            className="text-sm text-center underline"
+            onClick={() => setisRegister("login")}
+          >
+            I already have an account
+          </h3>
+        )}
+        {isRegister == "login" ? (
+          <button
+            type="submit"
+            className="bg-amber-100 text-center flex justify-center w-full mt-5 text-black font-extrabold p-2 rounded-4xl"
+          >
+            Login
+          </button>
+        ) : (
+          <button className="bg-amber-100 text-center flex justify-center w-full mt-5 text-black font-extrabold p-2 rounded-4xl">
+            Submit
+          </button>
+        )}
       </form>
     </section>
   );

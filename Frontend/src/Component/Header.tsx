@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { FaFilter } from "react-icons/fa";
 import { RecipeContext } from "../Context/Context";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const [open, setopen] = useState<boolean>(false);
@@ -22,6 +23,7 @@ const Header = () => {
       ];
   const handleLogout = () => {
     setlogin(false);
+    toast("User Has Been Logout Successfully")
     navigate("/");
     localStorage.removeItem("token");
   };
