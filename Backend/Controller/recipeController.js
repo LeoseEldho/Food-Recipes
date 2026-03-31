@@ -1,4 +1,16 @@
 import Recipe from "../Model/recipeModel.js";
+import multer from 'multer'
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/image')
+  },
+  filename: function (req, file, cb) {
+    const filename = Date.now() + '-' + file.fieldname
+    cb(null, filename)
+  }
+})
+export const upload = multer({ storage: storage })
 
 export const getRecipes = async (req, res) => {
   try {
@@ -34,12 +46,15 @@ export const getRecipesById = async (req, res) => {
 export const addRecipes = async (req, res) => {
   try {
     const { title, ingredients, instructions, time, image } = req.body;
-    if (!title || !ingredients || !instructions || !time || !image) {
+        console.log(title,ingredients,instructions,time,image,"sdf")
+
+    if (!title || !ingredients || !instructions || !time) {
       return res.status(400).json({
         success: false,
         message: "missing credentials",
       });
     }
+
     const isRecipe = await Recipe.findOne({ title });
     if (isRecipe) {
       return res.status.json({
@@ -57,11 +72,12 @@ export const addRecipes = async (req, res) => {
     newRecipe.save();
     res.status(200).json({
       success: true,
-      message: newRecipe,
+      message: "Recipe Added Successfully",
+      data:newRecipe
     });
   } catch (error) {
     console.log("Something Went Wrong !", error);
-    res.status(500).json({ success: false });
+    res.status(500).json({ success: false,message:"Something Went Wrong !" });
   }
 };
 

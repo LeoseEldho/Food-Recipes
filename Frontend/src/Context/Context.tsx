@@ -5,7 +5,6 @@ import axios, { type AxiosInstance } from "axios";
 type RecipeContextType = {
   login: boolean;
   setlogin: React.Dispatch<React.SetStateAction<boolean>>
-  BackUrl: string;
   api: AxiosInstance;
   isRegister: String;
   setisRegister: React.Dispatch<React.SetStateAction<string>>;
@@ -30,7 +29,7 @@ const Context = ({ children }: Props) => {
   const [isRegister, setisRegister] = useState<string>("login");
   return (
     <RecipeContext.Provider
-      value={{ login, setlogin, BackUrl, api, isRegister, setisRegister }}
+      value={{ login, setlogin, api, isRegister, setisRegister }}
     >
       {children}
     </RecipeContext.Provider>

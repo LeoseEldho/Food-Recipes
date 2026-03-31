@@ -43,9 +43,10 @@ const Home = () => {
           </form>
         </div>
       </div>
-      <div className="grid grid-cols-2">
-          <img src="src\assets\food\image.png" alt="" />
-           <div className="flex justify-between my-6 border border-gray-400 rounded-4xl px-2.5 py-3">
+      <div className="grid  items-center mb-6 border sm:grid-cols-1 p-4 rounded-3xl">
+        <h3 className="px-2">Add Your Recipe Ideas :</h3>
+          <div className="hidden sm:block"><img src="src\assets\food\image.png" alt="" /></div>
+           <div className="flex justify-between my-2.5 border border-gray-400 rounded-2xl px-2.5 py-3 w-full">
         <h2 className="font-extrabold">Add New Recipe</h2>
         <button onClick={()=>navigate("/addRecipe")} className="bg-green-600 rounded-4xl px-2 font-bold">Add</button>
       </div>
