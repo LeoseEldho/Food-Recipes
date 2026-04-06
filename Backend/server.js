@@ -8,6 +8,7 @@ import userRouter from './Routes/userRoute.js'
 const app = express();
 
 app.use(express.json())
+app.use(express.static("public"))
 
 app.get("/", (req, res) => {
     res.send("Server is running")
@@ -21,7 +22,7 @@ app.use(
 );
 
 app.use("/api", router);
-app.use("/api",userRouter)
+app.use("/api", userRouter)
 
 dataBase()
 

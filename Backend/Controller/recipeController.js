@@ -45,8 +45,8 @@ export const getRecipesById = async (req, res) => {
 
 export const addRecipes = async (req, res) => {
   try {
-    const { title, ingredients, instructions, time, image } = req.body;
-        console.log(title,ingredients,instructions,time,image,"sdf")
+    const { title, ingredients, instructions, time } = req.body;
+     const image = req.file ? req.file.filename : null;
 
     if (!title || !ingredients || !instructions || !time) {
       return res.status(400).json({
@@ -57,7 +57,7 @@ export const addRecipes = async (req, res) => {
 
     const isRecipe = await Recipe.findOne({ title });
     if (isRecipe) {
-      return res.status.json({
+      return res.status(400).json({
         success: false,
         message: "Item already Exist",
       });
@@ -68,7 +68,9 @@ export const addRecipes = async (req, res) => {
       instructions: instructions,
       time: time,
       image: image,
+      createdBy: req.userId.id
     });
+
     newRecipe.save();
     res.status(200).json({
       success: true,
@@ -83,7 +85,7 @@ export const addRecipes = async (req, res) => {
 
 export const editRecipes = async (req, res) => {
   try {
-    const { title, ingredients, instructions, time, image } = req.body;
+
     const recipe = await Recipe.findById(req.params.id);
     if (!recipe) {
       return res.status(400).json({

@@ -58,8 +58,8 @@ const Home = () => {
               <div className="h-56 relative">
                 <img
                   className="w-full h-full object-cover"
-                  src="src\assets\food\image-food.png"
-                  alt="Recipe Image"
+                  src={`http://localhost:3000/image/${x.image}`}
+                  alt={x.name}
                 />
                 <div className="absolute top-3 left-2 p-2 rounded-full border-gray-400 border inline-block items-center bg-black">
                   <FaHeart />

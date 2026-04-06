@@ -20,26 +20,24 @@ const Login = () => {
       if (isRegister == "Register") {
         const response = await api.post("/api/register", {
           name,
-          password,
+          password, 
           email,
         });
         if (response.data.success) {
           toast.success(response.data.message);
           setisRegister("login");
-          localStorage.setItem("token", response.data.token);
         }
       } else {
         const response = await api.post("/api/login", { email, password });
         if (response.data.success) {
           toast.success(response.data.message);
           setlogin(true);
-          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("token", response.data.data);
           navigate("/");
         }
       }
     } catch (error: any) {
       console.log(error);
-
       if (error.response) {
         toast.error(error.response.data.message);
       } else {
@@ -66,6 +64,8 @@ const Login = () => {
             <input
               type="text"
               value={name}
+              required
+              name="name"
               onChange={(e) => setName(e.target.value)}
               placeholder="enter your name"
               className=" outline-0 text-center ml-3"
@@ -76,6 +76,8 @@ const Login = () => {
         <label htmlFor="">Email:</label>
         <input
           value={email}
+          required
+          name="email"
           onChange={(e) => setEmail(e.target.value)}
           type="email"
           placeholder="enter your email"
@@ -87,6 +89,8 @@ const Login = () => {
         <input
           type="password"
           value={password}
+          required
+          name="password"
           onChange={(e) => setPassword(e.target.value)}
           placeholder="enter your password"
           className=" outline-0 text-center"
@@ -99,7 +103,7 @@ const Login = () => {
             Don't have an account?
           </h3>
         )}
-                {isRegister == "Register" && (
+        {isRegister == "Register" && (
           <h3
             className="text-sm text-center underline"
             onClick={() => setisRegister("login")}
