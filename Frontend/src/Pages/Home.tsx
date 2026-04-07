@@ -9,6 +9,7 @@ const Home = () => {
   if (!context) return null;
   const { api } = context;
   const [recipe, setRecipe] = useState<any[]>([]);
+  const [loading,setLoading]=useState(true)
   const navigate =useNavigate()
 
   useEffect(() => {
@@ -16,6 +17,7 @@ const Home = () => {
       try {
         const respone = await api.get("/api/data");
         setRecipe(respone.data.data);
+        setLoading(false)
       } catch (err) {
         console.log(err);
       }
@@ -52,9 +54,11 @@ const Home = () => {
       </div>
    </div>
       <div>
-        <div className="grid grid-cols-1 text-white gap-6 sm:grid-cols-2 items-center justify-center">
+        {loading ?
+          <div className="flex justify-center text-2xl">Loading...</div> :
+       <div className="grid grid-cols-1 text-white gap-6 sm:grid-cols-2 items-center justify-center">
           {recipe.map((x: any) => (
-            <div className="flex flex-col rounded-3xl relative border border-gray-400 overflow-hidden ">
+            <div key={x._id} className="flex flex-col rounded-3xl relative border border-gray-400 overflow-hidden ">
               <div className="h-56 relative">
                 <img
                   className="w-full h-full object-cover"
@@ -74,7 +78,8 @@ const Home = () => {
               </div>
             </div>
           ))}
-        </div>
+        </div>    
+      }
       </div>
     </section>
   );

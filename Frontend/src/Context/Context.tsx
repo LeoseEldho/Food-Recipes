@@ -1,10 +1,11 @@
 import { createContext, useState } from "react";
 import type { ReactNode } from "react";
 import axios, { type AxiosInstance } from "axios";
+import { useEffect } from "react";
 
 type RecipeContextType = {
   login: boolean;
-  setlogin: React.Dispatch<React.SetStateAction<boolean>>
+  setlogin: React.Dispatch<React.SetStateAction<boolean>>;
   api: AxiosInstance;
   isRegister: String;
   setisRegister: React.Dispatch<React.SetStateAction<string>>;
@@ -27,6 +28,14 @@ const api = axios.create({
 const Context = ({ children }: Props) => {
   const [login, setlogin] = useState<boolean>(false);
   const [isRegister, setisRegister] = useState<string>("login");
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      setlogin(true);
+    }
+  }, []);
+
   return (
     <RecipeContext.Provider
       value={{ login, setlogin, api, isRegister, setisRegister }}

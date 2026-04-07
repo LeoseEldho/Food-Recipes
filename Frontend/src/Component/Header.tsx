@@ -26,6 +26,7 @@ const Header = () => {
     toast("User Has Been Logout Successfully")
     navigate("/");
     localStorage.removeItem("token");
+    localStorage.removeItem("user")
   };
   return (
     <section

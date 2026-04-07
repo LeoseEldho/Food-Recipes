@@ -20,19 +20,21 @@ const Login = () => {
       if (isRegister == "Register") {
         const response = await api.post("/api/register", {
           name,
-          password, 
+          password,
           email,
         });
         if (response.data.success) {
           toast.success(response.data.message);
           setisRegister("login");
+          
         }
       } else {
         const response = await api.post("/api/login", { email, password });
         if (response.data.success) {
           toast.success(response.data.message);
           setlogin(true);
-          localStorage.setItem("token", response.data.data);
+          localStorage.setItem("token", response.data.data.token);
+          localStorage.setItem("user", JSON.stringify(response.data.data.user));
           navigate("/");
         }
       }

@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { RecipeContext } from "../Context/Context";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 const AddRecipe = () => {
   const context = useContext(RecipeContext);
@@ -49,7 +50,7 @@ const AddRecipe = () => {
       const res = await api.post("/api/add", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          "authorization":"Bearer "+ localStorage.getItem("token")
+          authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
       if (res.data) {
@@ -68,6 +69,15 @@ const AddRecipe = () => {
       toast.error(error.response.data.message);
     }
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/login");
+    }
+  }, []);
+
   return (
     <section className="flex justify-center">
       <div className="w-full max-w-2xl bg-black text-white p-6 rounded-2xl">

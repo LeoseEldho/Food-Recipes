@@ -26,13 +26,11 @@ export const userRegister = async (req, res) => {
     });
     newUser.save();
 
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: "User Has Been Registered Successfully",
-        data: { name, email },
-      });
+    res.status(201).json({
+      success: true,
+      message: "User Has Been Registered Successfully",
+      data: { name, email },
+    });
   } catch (error) {
     console.log("Something Error Occure", error);
   }
@@ -61,13 +59,18 @@ export const userLogin = async (req, res) => {
     const token = jwt.sign({ email, id: isExist.id }, process.env.SECRET_KEY, {
       expiresIn: "20min",
     });
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "User Has Login Successfully",
-        data: token,
-      });
+    res.status(200).json({
+      success: true,
+      message: "User Has Login Successfully",
+      data: {
+        token,
+        user: {
+          _id: isExist._id,
+          email: isExist.email,
+          name: isExist.name,
+        },
+      },
+    });
   } catch (error) {
     console.log(error);
   }
