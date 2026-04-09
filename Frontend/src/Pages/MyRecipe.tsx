@@ -1,7 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { BsStopwatch } from "react-icons/bs";
-import { FaHeart } from "react-icons/fa";
+import { FaEdit, FaHeart } from "react-icons/fa";
 import { RecipeContext } from "../Context/Context";
+import { Link, useNavigate } from "react-router";
+import { MdDeleteForever } from "react-icons/md";
+import { toast } from "react-toastify";
 
 const MyRecipe = () => {
   const context = useContext(RecipeContext);
@@ -9,6 +12,7 @@ const MyRecipe = () => {
   const { api } = context;
   const [loading, setLoading] = useState(true);
   const [userRecipe, setUserRecipe] = useState([]);
+  const navigate=useNavigate()
 
   useEffect(() => {
     const getData = async () => {
@@ -42,12 +46,24 @@ const MyRecipe = () => {
     getData();
   }, []);
 
+  const DeleteRecipe =async (id:any) => {
+    try {
+      let res = await api.delete(`/api/${id}`);
+      if (res.data) {
+        toast(res.data.message);
+        navigate("/");
+      }
+    } catch (error:any) {
+      console.log(error)
+      toast.error(error.response.data.message);
+    }
+  }
   return (
-    <section className="text-white h-screen">
+    <section className="text-white min-h-screen">
       {loading ? (
         <div className="flex text-2xl justify-center py-8">Loading...</div>
       ) : (
-        <div className="grid grid-cols-1 text-white gap-6 sm:grid-cols-2 items-center justify-center p-6">
+        <div className="grid grid-cols-1 text-white gap-6 sm:grid-cols-2 items-center justify-center p-6 z-10">
           {userRecipe.length === 0 ? (
             <div className="flex text-center w-full text-2xl py-8 ml-14">No recipes found</div>
           ) : (
@@ -65,6 +81,13 @@ const MyRecipe = () => {
                   <div className="absolute top-3 left-2 p-2 rounded-full border-gray-400 border inline-block items-center bg-black">
                     <FaHeart />
                   </div>
+                  <div className="absolute top-3 right-12 p-2 rounded-full border-gray-400 border inline-block items-center bg-black">
+                    <Link to={`/editRecipe/${x._id}`}> <FaEdit /></Link>
+                  </div>
+                  <div className="absolute top-3 right-2 p-2 rounded-full border-gray-400 border inline-block items-center bg-black">
+                     <MdDeleteForever onClick={()=>DeleteRecipe(x._id)} />
+                  </div>
+                   
                 </div>
                 <div className="flex flex-col justify-between p-6 space-y-2">
                   <h3 className="text-2xl font-bold">{x.title}</h3>

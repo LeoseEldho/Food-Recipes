@@ -85,20 +85,34 @@ export const addRecipes = async (req, res) => {
 
 export const editRecipes = async (req, res) => {
   try {
-
     const recipe = await Recipe.findById(req.params.id);
+
     if (!recipe) {
       return res.status(400).json({
         success: false,
         message: "This Recipe is not Present",
       });
     }
-    const updateRecipe = await Recipe.findByIdAndUpdate(recipe, req.body, {
-      new: true,
+
+    const updateData = {
+      ...req.body,
+    };
+
+    if (req.file) {
+      updateData.image = req.file.filename;
+    }
+
+    const updateRecipe = await Recipe.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Recipe Updated",
+      data: updateRecipe,
     });
-    res
-      .status(201)
-      .json({ success: true, message: "Recipe Updated", data: updateRecipe });
   } catch (error) {
     console.log("Something Went Wrong !", error);
     res.status(500).json({ success: false });
@@ -108,14 +122,22 @@ export const editRecipes = async (req, res) => {
 export const deleteRecips = async (req, res) => {
   try {
     const id = req.params.id;
-    const recipe = await Recipe.findById( id );
+
+    const recipe = await Recipe.findById(id);
+
     if (!recipe) {
-      return res
-        .status(400)
-        .json({ success: false, message: "There is no product " });
+      return res.status(400).json({
+        success: false,
+        message: "There is no product",
+      });
     }
-    const deleteRecips = await Recipe.findByIdAndDelete(recipe);
-    res.status(200).json({success:true,message:"Recipe has been Deleted"})
+
+    await Recipe.findByIdAndDelete(id);
+
+    res.status(200).json({
+      success: true,
+      message: "Recipe has been Deleted",
+    });
   } catch (error) {
     console.log("Something Went Wrong !", error);
     res.status(500).json({ success: false });
