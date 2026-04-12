@@ -22,11 +22,17 @@ const recipeSchema = new mongoose.Schema(
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref:"User"
-    }
+      ref: "User",
+    },
+    favirate: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   { timestamps: true },
 );
-const Recipe=mongoose.model("Recipe",recipeSchema)
+const Recipe = mongoose.model("Recipe", recipeSchema);
 
-export default Recipe
+export default Recipe;

@@ -6,6 +6,7 @@ import {
   addRecipes,
   deleteRecips,
   upload,
+  toggleFavorite,
 } from "../Controller/recipeController.js";
 import verifyToken from "../middleware/auth.js";
 
@@ -17,5 +18,6 @@ router.get("/:id", getRecipesById);
 router.post("/add", upload.single("file"), verifyToken, addRecipes);
 router.put("/:id", upload.single("file"), verifyToken, editRecipes);
 router.delete("/:id", verifyToken,deleteRecips);
+router.put("/favorite/:id", verifyToken, toggleFavorite);
 
 export default router;

@@ -143,3 +143,41 @@ export const deleteRecips = async (req, res) => {
     res.status(500).json({ success: false });
   }
 };
+
+export const toggleFavorite = async (req, res) => {
+  try {
+    const userId = req.userId.id;
+    const recipeId = req.params.id;
+
+    const recipe = await Recipe.findById(recipeId);
+
+    if (!recipe) {
+      return res.status(404).json({
+        success: false,
+        message: "Recipe not found",
+      });
+    }
+
+    const isFav = recipe.favirate.includes(userId);
+
+    if (isFav) {
+
+      recipe.favirate = recipe.favirate.filter(
+        (id) => id.toString() !== userId
+      );
+    } else {
+      recipe.favirate.push(userId);
+    }
+
+    await recipe.save();
+
+    res.status(200).json({
+      success: true,
+      message: isFav ? "Removed from favorites" : "Added to favorites",
+      data: recipe,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false });
+  }
+};

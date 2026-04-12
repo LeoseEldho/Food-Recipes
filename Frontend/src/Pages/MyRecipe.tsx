@@ -59,11 +59,11 @@ const MyRecipe = () => {
     }
   }
   return (
-    <section className="text-white min-h-screen">
+    <section className="text-white max-w-7xl m-auto px-6  min-h-screen">
       {loading ? (
         <div className="flex text-2xl justify-center py-8">Loading...</div>
       ) : (
-        <div className="grid grid-cols-1 text-white gap-6 sm:grid-cols-2 items-center justify-center p-6 z-10">
+        <div className="grid grid-cols-1 text-white gap-6 sm:grid-cols-2 items-center justify-center p-6 z-10 md:grid-cols-3">
           {userRecipe.length === 0 ? (
             <div className="flex text-center w-full text-2xl py-8 ml-14">No recipes found</div>
           ) : (

@@ -8,7 +8,7 @@ const Home = () => {
   const context = useContext(RecipeContext);
   if (!context) return null;
   const { api } = context;
-  const [recipe, setRecipe] = useState<any[]>([]);
+  let [recipe, setRecipe] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -16,7 +16,16 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const respone = await api.get("/api/data");
-        setRecipe(respone.data.data);
+
+        const userString = localStorage.getItem("user");
+        const user = userString ? JSON.parse(userString) : null;
+
+        const updated = respone.data.data.map((item: any) => ({
+          ...item,
+          isFavorite: user ? item.favirate?.includes(user._id) : false,
+        }));
+
+        setRecipe(updated);
         setLoading(false);
       } catch (err) {
         console.log(err);
@@ -24,7 +33,19 @@ const Home = () => {
     };
     fetchData();
   }, [api]);
+  const favirate = async (id: string) => {
+    try {
+      const res = await api.put(`/api/favorite/${id}`);
 
+      setRecipe((prev) =>
+        prev.map((item) =>
+          item._id === id ? { ...item, isFavorite: !item.isFavorite } : item,
+        ),
+      );
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
   return (
     <section className="text-white max-w-7xl m-auto px-6 ">
       <div className="flex  justify-center pt-6 mb-6">
@@ -64,7 +85,7 @@ const Home = () => {
         {loading ? (
           <div className="flex justify-center text-2xl">Loading...</div>
         ) : (
-          <div className="grid grid-cols-1 text-white gap-6 sm:grid-cols-2 items-center justify-center">
+          <div className="grid grid-cols-1 text-white gap-6 sm:grid-cols-2 items-center justify-center md:grid-cols-3 pb-6">
             {recipe.map((x: any) => (
               <div
                 key={x._id}
@@ -77,7 +98,10 @@ const Home = () => {
                     alt={x.name}
                   />
                   <div className="absolute top-3 left-2 p-2 rounded-full border-gray-400 border inline-block items-center bg-black">
-                    <FaHeart />
+                    <FaHeart
+                      onClick={() => favirate(x._id)}
+                      className={x.isFavorite ? "text-red-500" : "text-white"}
+                    />
                   </div>
                 </div>
                 <div className="flex flex-col justify-between p-6 space-y-2">
@@ -86,12 +110,10 @@ const Home = () => {
                     <BsStopwatch /> {x.time}
                   </p>
                   <Link to={`/detailRecipe/${x._id}`} className="">
-                  <button className="mt-3 rounded-full border w-full border-gray-400 py-3  bg-yellow-100 text-black font-extrabold">
-                    
+                    <button className="mt-3 rounded-full border w-full border-gray-400 py-3  bg-yellow-100 text-black font-extrabold">
                       View Recipe
-                  </button>
-
-                    </Link>
+                    </button>
+                  </Link>
                 </div>
               </div>
             ))}
